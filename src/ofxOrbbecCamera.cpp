@@ -267,6 +267,22 @@ bool ofxOrbbecCamera::open(ofxOrbbec::Settings aSettings){
     return true; 
 }
 
+int ofxOrbbecCamera::getDepthWidth() {
+    return mCurrentSettings.depthFrameSize.requestWidth;
+}
+
+int ofxOrbbecCamera::getDepthHeight() {
+    return mCurrentSettings.depthFrameSize.requestHeight;
+}
+
+int ofxOrbbecCamera::getColorWidth() {
+    return mCurrentSettings.colorFrameSize.requestWidth;
+}
+
+int ofxOrbbecCamera::getColorHeight() {
+    return mCurrentSettings.colorFrameSize.requestHeight;
+}
+
 bool ofxOrbbecCamera::isConnected(){
 	if( mPipe && mPipe->getDevice() ){
 		return true;

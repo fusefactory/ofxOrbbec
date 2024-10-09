@@ -5,7 +5,7 @@
 #include <opencv2/opencv.hpp>
 
 
-//If you have ffmpeg / libavcodec included in your project uncomment below 
+//If you have ffmpeg / libavcodec included in your project uncomment below
 //You can easily get the required libs from ofxFFmpegRTSP addon ( if you add it to your project )
 #define OFXORBBEC_DECODE_H264_H265
 
@@ -18,6 +18,7 @@
     #include <libavutil/imgutils.h>
     }
 #endif 
+#pragma once
 
 namespace ofxOrbbec{
 
@@ -72,7 +73,12 @@ class ofxOrbbecCamera : public ofThread{
         
         std::vector <glm::vec3> getPointCloud(); 
         ofMesh getPointCloudMesh();
-
+    
+        int getDepthWidth();
+        int getDepthHeight();
+        int getColorHeight();
+        int getColorWidth();
+    
     protected:
         void threadedFunction() override; 
         void clear(); 

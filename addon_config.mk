@@ -59,7 +59,16 @@ common:
 	# when parsing the file system looking for libraries exclude this for all or
 	# a specific platform
 	# ADDON_LIBS_EXCLUDE =
+	ADDON_SOURCES_EXCLUDE = libs/ffmpeg/%
 
 linux64:
 	ADDON_LIBS =
 	ADDON_LIBS += libs/orbbec/lib/linux64/libOrbbecSDK.so
+
+osx:
+	ADDON_LDFLAGS = -rpath @loader_path/../../../../../../../addons/ofxOrbbec/libs
+	ADDON_INCLUDES_EXCLUDE = libs/ffmpeg/include/libavformat
+	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavutil
+	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libavcodec
+	ADDON_INCLUDES_EXCLUDE += libs/ffmpeg/include/libswresample
+
