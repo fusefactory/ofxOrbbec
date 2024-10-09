@@ -1,3 +1,4 @@
+#pragma once
 #include "OrbbecObjectTracker.h"
 #include "OrbbecDevice.h"
 

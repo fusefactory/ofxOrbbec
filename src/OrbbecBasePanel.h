@@ -8,11 +8,12 @@
 #include <stdio.h>
 #include "ofxGui.h"
 #include "OrbbecDevice.h"
+#include "OrbbecParameters.h"
 
 class OrbbecBasePanel : public ofxPanel{
     public:
         void addGuiComponents(OrbbecDevice *orbbecDevice);
-        void addGuiComponents(OrbbecDevice *orbbecDevice, ofxOrbbec::Settings settings);
+        void addGuiComponents(OrbbecDevice *orbbecDevice, OrbbecParameters settings);
     
         void save();
         string &getFilename(){return filename;}

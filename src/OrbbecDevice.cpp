@@ -166,3 +166,12 @@ float OrbbecDevice::convertToRealWorldX(float x, float depth) {
 float OrbbecDevice::convertToRealWorldY(float y, float depth) {
     return (0.5f - y / resolution.y) * depth * YtoZ;
 }
+
+void OrbbecDevice::connectRelease(){
+    if (isRunning()) {
+        stop();
+    } else {
+        start();
+    }
+
+}

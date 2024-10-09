@@ -9,6 +9,7 @@ public:
     void stop();
     bool isRunning();
     void update();
+    void connectRelease();
 
     ofVec2f getResolution();
     std::string getName();
