@@ -35,7 +35,7 @@ bool OrbbecObjectTracker::showingBlobs() {
 }
 
 void OrbbecObjectTracker::update(int maxBlobs) {
-    orbbec->getTexture().readToPixels(depthPixels);
+    orbbec->getProcessedTexture().readToPixels(depthPixels);
     colorImage.setFromPixels(depthPixels);
     grayImage = colorImage;
     

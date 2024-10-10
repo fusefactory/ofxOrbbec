@@ -21,10 +21,9 @@ void OrbbecBasePanel::addGuiComponents(OrbbecDevice *orbbecDevice, OrbbecParamet
     this->add(saveButton.setup("SAVE"));
     saveButton.addListener(this, &OrbbecBasePanel::save);
 
-    //this->add(minDistanceIntSlider.setup("MIN DISTANCE", orbbecParams.minDistance.d, orbbecParams.minDistance.min, orbbecParams.minDistance.max));
-    //minDistanceIntSlider.addListener(orbbecDevice, &OrbbecDevice::setMinDistance);
+    this->add(minDistanceIntSlider.setup("MIN DISTANCE", orbbecParams.minDistance.d, orbbecParams.minDistance.min, orbbecParams.minDistance.max));
+    minDistanceIntSlider.addListener(orbbecDevice, &::OrbbecDevice::setMinDistance);
  
-    /*
     this->add(maxDistanceIntSlider.setup("MAX DISTANCE", orbbecParams.maxDistance.d, orbbecParams.maxDistance.min, orbbecParams.maxDistance.max));
     maxDistanceIntSlider.addListener(orbbecDevice, &::OrbbecDevice::setMaxDistance);
     
@@ -47,7 +46,7 @@ void OrbbecBasePanel::addGuiComponents(OrbbecDevice *orbbecDevice, OrbbecParamet
     vertCorrectionFloatSlider.addListener(orbbecDevice, &::OrbbecDevice::setVertCorrection);
     
     this->add(clearImageButton.setup("CLEAR IMAGE"));
-    clearImageButton.addListener(orbbecDevice, &OrbbecDevice::clearImage);*/
+    clearImageButton.addListener(orbbecDevice, &OrbbecDevice::clearImage);
 }
 
 void OrbbecBasePanel::save(){
@@ -55,11 +54,11 @@ void OrbbecBasePanel::save(){
         this->saveToFile(filename);
     }
     else if(orbbecDevice != NULL){
-        filename = orbbecDevice->getName()+ "orbbec.xml";
+        filename = orbbecDevice->getName()+ ".xml";
     }
     else{
         filename = "orbbecBasePanel.xml";
-        ofLogWarning("KinectBasePanal", "filename not setted");
+        ofLogWarning("Orbbec", "filename not setted");
     }
     
     saveToFile(filename);
