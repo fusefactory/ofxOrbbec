@@ -2,17 +2,18 @@
 
 OrbbecDevice::OrbbecDevice(ofxOrbbecCamera* camera, ofxOrbbec::Settings _setting) : camera(camera), currentSettings(_setting), fullName(ofToString(_setting.ip)){
 
-    fieldOfViewRad.set(ofDegToRad(fieldOfViewDegree.x), ofDegToRad(fieldOfViewDegree.y));
     resolution.x = currentSettings.depthFrameSize.requestWidth;
     resolution.y = currentSettings.depthFrameSize.requestHeight;
-
+    
+    setFieldOfView(resolution.x);
+    
     std::transform(fullName.begin(), fullName.end(), fullName.begin(), ::toupper);
 
     XtoZ = (float)tan(fieldOfViewRad.x / 2) * 2;
     YtoZ = (float)tan(fieldOfViewRad.y / 2) * 2;
 
     const int numOfPixels = resolution.x * resolution.y;
-    lastData = new float[numOfPixels];
+    lastData = new float[numOfPixels];		
     texture.allocate(resolution.x, resolution.y, GL_R16F);
     texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST); // for collison map
     processedTexture.allocate(resolution.x, resolution.y, GL_RGB);
@@ -25,7 +26,7 @@ OrbbecDevice::OrbbecDevice(ofxOrbbecCamera* camera, ofxOrbbec::Settings _setting
     texture.loadData(data, resolution.x, resolution.y, GL_R16F);
     delete[] data;
 
-    depthShader.load("shaders/depth.vert","shaders/depth.frag");
+    depthShader.load("shaders/depth.vert", "shaders/depth.frag");
 
     float viewW = resolution.x;
     float viewH = resolution.y;
@@ -43,7 +44,7 @@ OrbbecDevice::OrbbecDevice(ofxOrbbecCamera* camera, ofxOrbbec::Settings _setting
     projectionFlat.makePerspectiveMatrix(fov, aspect, nearDist, farDist);
     modelviewFlat.makeIdentityMatrix();
     modelviewFlat.makeLookAtViewMatrix(ofVec3f(eyeX, eyeY, cameraDist), ofVec3f(eyeX, eyeY, 0), ofVec3f(0.0, 1.0, 0.0));
-        
+    
     }
     void OrbbecDevice::start() {
         camera->open(currentSettings);
@@ -133,6 +134,19 @@ OrbbecDevice::OrbbecDevice(ofxOrbbecCamera* camera, ofxOrbbec::Settings _setting
         bClearImage = true;
     }
 
+void OrbbecDevice::setFieldOfView(int resX){
+    switch(resX){
+        case 512:
+            fieldOfViewDegree.set(120, 120);
+            break;
+        case 640:
+            fieldOfViewDegree.set(75, 65);
+            break;
+        default:
+            break;
+    }
+    fieldOfViewRad.set(ofDegToRad(fieldOfViewDegree.x), ofDegToRad(fieldOfViewDegree.y));
+}
 
     void OrbbecDevice::loadKinectRecording(string _filename){
         kinectRecordingFilename = _filename;
@@ -259,3 +273,4 @@ ofTexture &OrbbecDevice::getProcessedTexture() {
     float OrbbecDevice::convertToRealWorldY(float y, float depth) {
         return (0.5f - y / resolution.y) * depth * YtoZ;
     }
+
