@@ -51,7 +51,8 @@ OrbbecDevice::OrbbecDevice(ofxOrbbecCamera* camera, ofxOrbbec::Settings _setting
     }
      
     void OrbbecDevice::stop() {
-        camera->close();
+        if (camera->isConnected())
+            camera->close();
     }
      
     bool OrbbecDevice::isRunning() {
