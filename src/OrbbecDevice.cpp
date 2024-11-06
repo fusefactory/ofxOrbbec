@@ -138,9 +138,11 @@ OrbbecDevice::OrbbecDevice(ofxOrbbecCamera* camera, ofxOrbbec::Settings _setting
 void OrbbecDevice::setFieldOfView(int resX){
     switch(resX){
         case 512:
+        case 1024:
             fieldOfViewDegree.set(120, 120);
             break;
         case 640:
+        case 320:
             fieldOfViewDegree.set(75, 65);
             break;
         default:
@@ -159,18 +161,13 @@ void OrbbecDevice::setFieldOfView(int resX){
     }
 
     void OrbbecDevice::update() {
-        camera->update();
-     
-        if (camera->isFrameNewDepth()) {
-            auto depthPix = camera->getDepthPixels();
-            texture.loadData(depthPix);
-
-        }
-
-        if(!readKinectRecording){
-            //float *data = updateEdgeData();
-            //texture.loadData(data, resolution.x, resolution.y, GL_RGB);
-        }else{
+        if (isRunning()){
+            camera->update();
+         
+            if (camera->isFrameNewDepth()) {
+                auto depthPix = camera->getDepthPixels();
+                texture.loadData(depthPix);
+            }
             
             glDisable(GL_BLEND);
             processedTexture.begin();
@@ -223,6 +220,15 @@ void OrbbecDevice::setFieldOfView(int resX){
             depthShader.end();
             processedTexture.end();
         }
+
+        if(readKinectRecording){
+            kinectRecording.update();
+            processedTexture.begin();
+            ofClear(0, 0, 0, 255);
+            ofSetColor(255,255,255,255);
+            kinectRecording.draw(0.0,0.0, resolution.x, resolution.y);
+            processedTexture.end();
+        }
     }
 
     ofTexture &OrbbecDevice::getTexture() {
@@ -248,11 +254,11 @@ ofTexture &OrbbecDevice::getProcessedTexture() {
 
     void OrbbecDevice::draw() {
         ofSetColor(255);
-        if(texture.isAllocated() && processedTexture.isAllocated())
-            processedTexture.draw(aspectPosition.x, aspectPosition.y, aspectSize.x, aspectSize.y);
+            if(texture.isAllocated() && processedTexture.isAllocated())
+                processedTexture.draw(aspectPosition.x, aspectPosition.y, aspectSize.x, aspectSize.y);
         
         ofDrawBitmapStringHighlight(fullName, aspectPosition.x + 20, aspectPosition.y + 20);
-        if (isRunning()) {
+        if (isRunning() || readKinectRecording) {
             ofSetColor(0, 255, 0, 255);
         } else {
             ofSetColor(255, 0, 0, 255);

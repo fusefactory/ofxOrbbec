@@ -50,7 +50,7 @@ class OrbbecDevice {
     float convertToRealWorldY(float y, float depth);
     
     //recorder
-    bool readKinectRecording = true;
+    bool readKinectRecording = false;
     string kinectRecordingFilename = "";
     ofVideoPlayer kinectRecording;
     void setReadKinectRecording(bool _readKinectRecording){readKinectRecording = _readKinectRecording;};
