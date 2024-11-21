@@ -14,9 +14,9 @@ void OrbbecBlobPanel::addGuiComponents(OrbbecDevice *orbbecDevice, OrbbecObjectT
     this->add(blobToggle.setup("BLOBS", true));
     blobToggle.addListener(orbbecObjectTracker, &::OrbbecObjectTracker::toggleBlobs);
    
-    this->add(minAreaIntSlider.setup("MIN AREA", orbbecObjectTracker->getMinArea(), 0, 1000));
+    this->add(minAreaIntSlider.setup("MIN AREA", orbbecObjectTracker->getMinArea(), 0, 10000));
     minAreaIntSlider.addListener(orbbecObjectTracker, &::OrbbecObjectTracker::setMinArea);
 
-    this->add(maxAreaIntSlider.setup("MAX AREA", orbbecObjectTracker->getMaxArea(), 1000, 50000));
+    this->add(maxAreaIntSlider.setup("MAX AREA", orbbecObjectTracker->getMaxArea(), 100, 100000));
     maxAreaIntSlider.addListener(orbbecObjectTracker, &::OrbbecObjectTracker::setMaxArea);
 }
