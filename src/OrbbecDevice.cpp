@@ -266,6 +266,7 @@ ofTexture &OrbbecDevice::getProcessedTexture() {
         ofDrawRectangle(aspectPosition.x + 10, aspectPosition.y + 6, 4, 20);
         ofSetColor(0, 0, 255);
         ofDrawLine(aspectPosition.x + aspectSize.x / 2.0, aspectPosition.y, aspectPosition.x + aspectSize.x / 2.0, aspectPosition.y + aspectSize.y);
+        ofDrawLine(aspectPosition.x, aspectPosition.y + aspectSize.y / 2.0, aspectPosition.x + aspectSize.x, aspectPosition.y + aspectSize.y /2.0);
     }
 
     void OrbbecDevice::drawSelected() {
