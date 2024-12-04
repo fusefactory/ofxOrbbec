@@ -42,6 +42,9 @@ void OrbbecBasePanel::addGuiComponents(OrbbecDevice *orbbecDevice, OrbbecParamet
     this->add(keystoneFloatSlider.setup("KEYSTONE", orbbecParams.keystone.d, orbbecParams.keystone.min, orbbecParams.keystone.max));
     keystoneFloatSlider.addListener(orbbecDevice, &::OrbbecDevice::setKeystone);
     
+    this->add(fisheyeFloatSlider.setup("FISHEYE", orbbecParams.fisheye.d, orbbecParams.fisheye.min, orbbecParams.fisheye.max));
+    fisheyeFloatSlider.addListener(orbbecDevice, &::OrbbecDevice::setFisheye);
+    
     this->add(vertCorrectionFloatSlider.setup("VERTICAL CORRECTION", orbbecParams.vertCorrection.d, orbbecParams.vertCorrection.min, orbbecParams.vertCorrection.max));
     vertCorrectionFloatSlider.addListener(orbbecDevice, &::OrbbecDevice::setVertCorrection);
     

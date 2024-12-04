@@ -22,5 +22,5 @@ public:
     float leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0;
     float vertCorrection = 1;
     float keystone = 0;
-
+    float fisheye = 0.0;
 };

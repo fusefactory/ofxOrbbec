@@ -34,6 +34,8 @@ class OrbbecDevice {
     float getBottomMargin();
     void setKeystone(float &_keystone);
     float getKeystone();
+    void setFisheye(float &_fisheye);
+    float getFisheye();
     void setVertCorrection(float &_vertCorrection);
     float getVertCorrection();
     void clearImage();
@@ -69,7 +71,7 @@ class OrbbecDevice {
         void setFieldOfView(int resX);
         int minDistance, maxDistance;
         float leftMargin, rightMargin, topMargin, bottomMargin;
-        float keystone, vertCorrection;
+        float keystone, fisheye, vertCorrection;
         
         bool bClearImage = false;
         unsigned int bytesPerPixel;
