@@ -29,6 +29,7 @@ class OrbbecBasePanel : public ofxPanel{
         ofxFloatSlider  bottomMarginIntSlider;
         ofxFloatSlider  vertCorrectionFloatSlider;
         ofxFloatSlider  keystoneFloatSlider;
+        ofxFloatSlider  fisheyeFloatSlider;
         ofxButton     clearImageButton;
     
         ofxButton     saveButton;

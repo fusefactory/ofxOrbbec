@@ -42,6 +42,7 @@ public:
     floatParam topMargin;
     floatParam bottomMargin;
     floatParam keystone;
+    floatParam fisheye;
     floatParam vertCorrection;
 };
 
@@ -54,6 +55,7 @@ static OrbbecParameters getDefaultParams(){
     orbbecParams.topMargin.set(0,0 ,0.5);
     orbbecParams.bottomMargin.set(0, 0, 0.5);
     orbbecParams.keystone.set(0.3, -1.0, 1.0);
+    orbbecParams.fisheye.set(0.0, -1.0, 1.0);
     orbbecParams.vertCorrection.set(1.0, -2.0, 2.0);
 
     return orbbecParams;

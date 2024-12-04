@@ -119,10 +119,17 @@ OrbbecDevice::OrbbecDevice(ofxOrbbecCamera* camera, ofxOrbbec::Settings _setting
         keystone = _keystone;
     }
 
+    void OrbbecDevice::setFisheye(float &_fisheye) {
+        fisheye = _fisheye;
+    }
+
     float OrbbecDevice::getKeystone() {
         return keystone;
     }
 
+    float OrbbecDevice::getFisheye() {
+        return fisheye;
+    }
     void OrbbecDevice::setVertCorrection(float &_vertCorrection) {
         vertCorrection = _vertCorrection;
     }
@@ -181,7 +188,11 @@ void OrbbecDevice::setFieldOfView(int resX){
             depthShader.setUniformMatrix4f("modelview", modelviewFlat);
             depthShader.setUniformMatrix4f("projection", projectionFlat);
             
+            ofImage texTest;
+            texTest.load(ofToDataPath("patterns/test_pattern_fuse_512x512.png"));
+            
             depthShader.setUniformTexture("tex0", texture, 0);
+//            depthShader.setUniformTexture("tex0", texTest.getTexture(), 0);
             
             depthShader.setUniform1f("onlyDepth", 1);
             depthShader.setUniform1f("maxDistance", 5000);
@@ -201,7 +212,9 @@ void OrbbecDevice::setFieldOfView(int resX){
             //offset
             depthShader.setUniform1f("x", 0.0); //-xKinect);
             depthShader.setUniform1f("y", 0.0); //yKinect);
-            
+           
+            depthShader.setUniform2f("mouse", ofVec2f(float(ofGetMouseX())/float(ofGetWidth()), float(ofGetMouseY())/float(ofGetHeight()))); //yKinect);
+
             depthShader.setUniform1f("noiseT", 1.0); //scaleKinect);
             
             //Scale
@@ -209,13 +222,15 @@ void OrbbecDevice::setFieldOfView(int resX){
             
             //keystone
             depthShader.setUniform1f("keystone", keystone);
-            
+            depthShader.setUniform1f("fisheye", fisheye);
+
             //correction
             depthShader.setUniform1f("correction", vertCorrection); //correctionKinect);
             
             ofClear(0, 0, 0, 255);
             ofSetColor(255,255,255,255);
             texture.draw(0.0,0.0, resolution.x, resolution.y);
+//            texTest.getTexture().draw(0.0,0.0, resolution.x, resolution.y);
             
             depthShader.end();
             processedTexture.end();
