@@ -18,8 +18,8 @@ public:
     void drawBlobs(float x, float y, float width, float height);
     vector<ofxCvBlob> getBlobs();
 
-protected:
     OrbbecDevice *orbbec;
+protected:
     ofPixels depthPixels;
     ofxCvContourFinder contourFinder;
     

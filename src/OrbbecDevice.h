@@ -1,6 +1,7 @@
 #include "ofxOrbbecCamera.h"
 
 #pragma once
+#include "ofxAutoReloadedShader.h"
 
 class OrbbecDevice {
     public:
@@ -58,9 +59,17 @@ class OrbbecDevice {
     void setReadKinectRecording(bool _readKinectRecording){readKinectRecording = _readKinectRecording;};
     bool getReadKinectRecording(){return readKinectRecording;};
     ofFbo processedTexture;
-    ofShader depthShader;
+//    ofShader depthShader;
+    ofxAutoReloadedShader *depthShader;
     ofMatrix4x4 projectionFlat;
     ofMatrix4x4 modelviewFlat;
+    
+    ofVec3f blob1DemoPos;
+    ofVec3f blob2DemoPos;
+    ofVec3f blob1DemoNoise = ofVec3f(0.0,0.2,0.3);
+    ofVec3f blob2DemoNoise = ofVec3f(2.4, 10.5, 20.06);
+
+    
     
     protected:
         ofxOrbbec::Settings currentSettings;
