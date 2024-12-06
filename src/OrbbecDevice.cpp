@@ -26,7 +26,8 @@ OrbbecDevice::OrbbecDevice(ofxOrbbecCamera* camera, ofxOrbbec::Settings _setting
     texture.loadData(data, resolution.x, resolution.y, GL_R16F);
     delete[] data;
 
-    depthShader.load("shaders/depth.vert", "shaders/depth.frag");
+    depthShader = new ofxAutoReloadedShader();
+    depthShader->load("shaders/depth");
 
     float viewW = resolution.x;
     float viewH = resolution.y;
@@ -168,7 +169,18 @@ void OrbbecDevice::setFieldOfView(int resX){
     }
 
     void OrbbecDevice::update() {
-        if (isRunning()){
+        ofFbo texTest2;
+        texTest2.allocate(320,288,GL_RGB);
+        texTest2.begin();
+        ofClear(0.0, 0.0, 0.0, 255.0);
+        float depth = blob1DemoPos.z * 255.0;
+        ofSetColor(depth);
+        ofDrawEllipse(1.5*blob1DemoPos.x*320.0, blob1DemoPos.y*288.0, 40, 40);
+        depth = blob2DemoPos.z * 255.0;
+        ofDrawEllipse(1.5*blob2DemoPos.x*320.0, blob2DemoPos.y*288.0, 40, 40);
+        texTest2.end();
+        
+        if (true) { //isRunning()){
             camera->update();
          
             if (camera->isFrameNewDepth()) {
@@ -178,61 +190,78 @@ void OrbbecDevice::setFieldOfView(int resX){
             
             glDisable(GL_BLEND);
             processedTexture.begin();
-            depthShader.begin();
+            depthShader->begin();
             
-            depthShader.setUniform1f("kinectWidth", resolution.x);
-            depthShader.setUniform1f("kinectHeight", resolution.y);
-            depthShader.setUniform1f("kinectHalfWidth", resolution.x / 2.0f);
-            depthShader.setUniform1f("kinectHalfHeight", resolution.y / 2.0f);
+            depthShader->setUniform1f("kinectWidth", resolution.x);
+            depthShader->setUniform1f("kinectHeight", resolution.y);
+            depthShader->setUniform1f("kinectHalfWidth", resolution.x / 2.0f);
+            depthShader->setUniform1f("kinectHalfHeight", resolution.y / 2.0f);
             
-            depthShader.setUniformMatrix4f("modelview", modelviewFlat);
-            depthShader.setUniformMatrix4f("projection", projectionFlat);
+            depthShader->setUniformMatrix4f("modelview", modelviewFlat);
+            depthShader->setUniformMatrix4f("projection", projectionFlat);
+           
+            float inc = 0.01;
+            blob1DemoNoise.x += inc;
+            blob1DemoPos.x = ofNoise(blob1DemoNoise.x);
+            blob1DemoNoise.y += inc;
+            blob1DemoPos.y = ofNoise(blob1DemoNoise.y);
+            blob1DemoNoise.z += inc;
+            blob1DemoPos.z = ofNoise(blob1DemoNoise.z);
+
+            blob2DemoNoise.x += inc;
+            blob2DemoPos.x = ofNoise(blob2DemoNoise.x);
+            blob2DemoNoise.y += inc;
+            blob2DemoPos.y = ofNoise(blob2DemoNoise.y);
+            blob2DemoNoise.z += inc;
+            blob2DemoPos.z = ofNoise(blob2DemoNoise.z);
+            
+
             
             ofImage texTest;
             texTest.load(ofToDataPath("patterns/test_pattern_fuse_512x512.png"));
             
-            depthShader.setUniformTexture("tex0", texture, 0);
-//            depthShader.setUniformTexture("tex0", texTest.getTexture(), 0);
+            depthShader->setUniformTexture("tex0", texture, 0);
+//            depthShader->setUniformTexture("tex0", texTest2.getTexture(), 0);
             
-            depthShader.setUniform1f("onlyDepth", 1);
-            depthShader.setUniform1f("maxDistance", 5000);
+            depthShader->setUniform1f("onlyDepth", 1);
+            depthShader->setUniform1f("maxDistance", 10000);
             
             //distance
-            depthShader.setUniform1f("near", minDistance);
-            depthShader.setUniform1f("far", maxDistance);
+            depthShader->setUniform1f("near", minDistance);
+            depthShader->setUniform1f("far", maxDistance);
             
-            depthShader.setUniform1f("lens", 1.0); //lensFactor);
+            depthShader->setUniform1f("lens", 1.0); //lensFactor);
             
             //crop
-            depthShader.setUniform1f("top", topMargin * resolution.y);
-            depthShader.setUniform1f("bottom", resolution.y - bottomMargin * resolution.y);
-            depthShader.setUniform1f("right", resolution.x - rightMargin * resolution.x);
-            depthShader.setUniform1f("left", leftMargin * resolution.x);
+            depthShader->setUniform1f("top", topMargin * resolution.y);
+            depthShader->setUniform1f("bottom", resolution.y - bottomMargin * resolution.y);
+            depthShader->setUniform1f("right", resolution.x - rightMargin * resolution.x);
+            depthShader->setUniform1f("left", leftMargin * resolution.x);
             
             //offset
-            depthShader.setUniform1f("x", 0.0); //-xKinect);
-            depthShader.setUniform1f("y", 0.0); //yKinect);
+            depthShader->setUniform1f("x", 0.0); //-xKinect);
+            depthShader->setUniform1f("y", 0.0); //yKinect);
            
-            depthShader.setUniform2f("mouse", ofVec2f(float(ofGetMouseX())/float(ofGetWidth()), float(ofGetMouseY())/float(ofGetHeight()))); //yKinect);
+            depthShader->setUniform2f("mouse", ofVec2f(float(ofGetMouseX())/float(ofGetWidth()), float(ofGetMouseY())/float(ofGetHeight()))); //yKinect);
 
-            depthShader.setUniform1f("noiseT", 1.0); //scaleKinect);
+            depthShader->setUniform1f("noiseT", 1.0); //scaleKinect);
             
             //Scale
-            depthShader.setUniform1f("scale", 1.0); //scaleKinect);
+            depthShader->setUniform1f("scale", 1.0); //scaleKinect);
             
             //keystone
-            depthShader.setUniform1f("keystone", keystone);
-            depthShader.setUniform1f("fisheye", fisheye);
+            depthShader->setUniform1f("keystone", keystone);
+            depthShader->setUniform1f("fisheye", fisheye);
 
             //correction
-            depthShader.setUniform1f("correction", vertCorrection); //correctionKinect);
+            depthShader->setUniform1f("correction", vertCorrection); //correctionKinect);
             
             ofClear(0, 0, 0, 255);
             ofSetColor(255,255,255,255);
             texture.draw(0.0,0.0, resolution.x, resolution.y);
-//            texTest.getTexture().draw(0.0,0.0, resolution.x, resolution.y);
+//            texTest2.getTexture().draw(0.0,0.0, resolution.x, resolution.y);
             
-            depthShader.end();
+            depthShader->end();
             processedTexture.end();
         }
 

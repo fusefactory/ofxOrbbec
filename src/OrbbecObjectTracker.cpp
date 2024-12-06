@@ -58,12 +58,14 @@ void OrbbecObjectTracker::drawBlobs(float x, float y, float width, float height)
     
     for (int i = 0; i < contourFinder.blobs.size(); i++ ) {
         ofxCvBlob& blob = contourFinder.blobs.at(i);
+        
         int col = i > 0 ? 255 : 0;
         ofSetColor(col, 255, 0, 127);
         ofDrawRectangle(blob.boundingRect.x, blob.boundingRect.y, blob.boundingRect.width, blob.boundingRect.height);
         ofFill();
-        ofSetColor(col, 255, 0, 255);
+        ofSetColor(col, 255, 255, 255);
         ofDrawEllipse(blob.centroid.x, blob.centroid.y, 10 * factor, 10 * factor);
+        
     }
     fbo.end();
     ofPopStyle();
