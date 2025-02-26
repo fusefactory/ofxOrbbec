@@ -296,6 +296,19 @@ ofTexture &OrbbecDevice::getProcessedTexture() {
         OrbbecDevice::aspectSize.set(width, height);
     }
 
+
+    void OrbbecDevice::setStageX(float &size) {
+        stageX = size;
+    }
+
+    void OrbbecDevice::setStageY(float &size) {
+        stageY = size;
+    }
+
+    void OrbbecDevice::setStageZ(float &size) {
+        stageZ = size;
+    }
+
     void OrbbecDevice::draw() {
         ofSetColor(255);
             if(texture.isAllocated() && processedTexture.isAllocated())

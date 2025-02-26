@@ -42,6 +42,21 @@ class OrbbecDevice {
     void clearImage();
     void loadKinectRecording(string _filename);
     
+    
+    void setStageX(float &size);
+    void setStageY(float &size);
+    void setStageZ(float &size);
+    
+    float getStageX() {
+        return stageX;
+    };
+    float getStageY() {
+        return stageY;
+    };
+    float getStageZ() {
+        return stageZ;
+    };
+    
     ofTexture &getTexture();
     ofTexture &getProcessedTexture();
     
@@ -93,5 +108,7 @@ class OrbbecDevice {
         ofVec2f aspectPosition;
         ofVec2f aspectSize;
         float XtoZ, YtoZ;
+    
+        float stageX = 9000, stageY = 9000, stageZ = 9000;
     
     };

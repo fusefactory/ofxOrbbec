@@ -33,4 +33,8 @@ class OrbbecBasePanel : public ofxPanel{
         ofxButton     clearImageButton;
     
         ofxButton     saveButton;
+    
+        ofxFloatSlider    stageX;
+        ofxFloatSlider    stageY;
+        ofxFloatSlider    stageZ;
 };

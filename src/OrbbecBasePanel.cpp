@@ -50,6 +50,16 @@ void OrbbecBasePanel::addGuiComponents(OrbbecDevice *orbbecDevice, OrbbecParamet
     
     this->add(clearImageButton.setup("CLEAR IMAGE"));
     clearImageButton.addListener(orbbecDevice, &OrbbecDevice::clearImage);
+    
+    
+    this->add(stageX.setup("STAGE X", orbbecDevice->getStageX(), 100, 20000));
+    stageX.addListener(orbbecDevice, &::OrbbecDevice::setStageX);
+    
+    this->add(stageY.setup("STAGE Y", orbbecDevice->getStageY(), 100, 20000));
+    stageY.addListener(orbbecDevice, &::OrbbecDevice::setStageY);
+    
+    this->add(stageZ.setup("STAGE Z", orbbecDevice->getStageZ(), 100, 20000));
+    stageZ.addListener(orbbecDevice, &::OrbbecDevice::setStageZ);
 }
 
 void OrbbecBasePanel::save(){

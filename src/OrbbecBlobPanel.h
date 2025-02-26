@@ -18,6 +18,9 @@ class OrbbecBlobPanel : public OrbbecBasePanel{
         ofxToggle       blobToggle;
         ofxIntSlider    minAreaIntSlider;
         ofxIntSlider    maxAreaIntSlider;
+        ofxFloatSlider    stageX;
+        ofxFloatSlider    stageY;
+        ofxFloatSlider    stageZ;
     
     protected:
         OrbbecObjectTracker *orbbecObjectTracker;

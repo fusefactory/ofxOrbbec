@@ -26,6 +26,18 @@ int OrbbecObjectTracker::getMaxArea() {
     return objectMaxArea;
 }
 
+void OrbbecObjectTracker::setStageX(float &size) {
+    stageX = size;
+}
+
+void OrbbecObjectTracker::setStageY(float &size) {
+    stageY = size;
+}
+
+void OrbbecObjectTracker::setStageZ(float &size) {
+    stageZ = size;
+}
+
 void OrbbecObjectTracker::toggleBlobs(bool &value) {
     showBlobs = value;
 }
